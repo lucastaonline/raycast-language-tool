@@ -1,0 +1,10 @@
+[2025-11-25T17:06:58.406Z] Error: Invalid Hey API shorthand format. Expected "organization/project?queryParams" or "organization/project", received: src/languagetool-swagger.json
+Stack:
+Error: Invalid Hey API shorthand format. Expected "organization/project?queryParams" or "organization/project", received: src/languagetool-swagger.json
+    at Te (file:///Users/lucas/.npm/_npx/a3521d5d8f143c4a/node_modules/@hey-api/openapi-ts/dist/openApi-4Fl0M8gJ.js:1:5275)
+    at Ee (file:///Users/lucas/.npm/_npx/a3521d5d8f143c4a/node_modules/@hey-api/openapi-ts/dist/openApi-4Fl0M8gJ.js:1:5612)
+    at Le (file:///Users/lucas/.npm/_npx/a3521d5d8f143c4a/node_modules/@hey-api/openapi-ts/dist/openApi-4Fl0M8gJ.js:1:7035)
+    at Be (file:///Users/lucas/.npm/_npx/a3521d5d8f143c4a/node_modules/@hey-api/openapi-ts/dist/openApi-4Fl0M8gJ.js:1:7559)
+    at kc (file:///Users/lucas/.npm/_npx/a3521d5d8f143c4a/node_modules/@hey-api/openapi-ts/dist/openApi-4Fl0M8gJ.js:5:150047)
+    at async te (file:///Users/lucas/.npm/_npx/a3521d5d8f143c4a/node_modules/@hey-api/openapi-ts/dist/src-C88NdVoQ.js:10:2313)
+    at async file:///Users/lucas/.npm/_npx/a3521d5d8f143c4a/node_modules/@hey-api/openapi-ts/dist/run.js:2:1654
