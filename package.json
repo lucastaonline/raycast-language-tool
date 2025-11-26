@@ -48,10 +48,11 @@
     },
     {
       "name": "showAdvancedOptions",
-      "title": "Show Advanced Options",
+      "label": "Show Advanced Options",
       "description": "Show advanced options for the LanguageTool API.",
       "type": "checkbox",
-      "required": false
+      "required": false,
+      "default": false
     }
   ],
   "dependencies": {

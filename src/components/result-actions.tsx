@@ -92,4 +92,3 @@ export function ResultActions({
     </ActionPanel>
   );
 }
-

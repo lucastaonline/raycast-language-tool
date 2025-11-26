@@ -32,7 +32,7 @@ export function ResultMetadata({ result, appliedSuggestions }: ResultMetadataPro
             const replacement = match.replacements[0]?.value || "";
             const original = match.context.text.slice(
               match.context.offset,
-              match.context.offset + match.context.length
+              match.context.offset + match.context.length,
             );
 
             return (
@@ -59,4 +59,3 @@ export function ResultMetadata({ result, appliedSuggestions }: ResultMetadataPro
     </Detail.Metadata>
   );
 }
-

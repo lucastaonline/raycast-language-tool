@@ -65,4 +65,3 @@ export interface Match {
 export interface Replacement {
   value?: string;
 }
-

@@ -26,7 +26,7 @@ export function useTextCorrections(textChecked: string, result: CheckTextRespons
         title: "Suggestion applied",
       });
     },
-    [appliedSuggestions]
+    [appliedSuggestions],
   );
 
   // Aplica todas as sugestões
@@ -94,4 +94,3 @@ export function useTextCorrections(textChecked: string, result: CheckTextRespons
     resetCorrections,
   };
 }
-

@@ -115,4 +115,3 @@ export function hasPremiumAccess(): boolean {
   const preferences = getPreferenceValues<Preferences>();
   return !!(preferences.username && preferences.apiKey);
 }
-
