@@ -48,8 +48,86 @@
     },
     {
       "name": "showAdvancedOptions",
-      "label": "Show Advanced Options",
-      "description": "Show advanced options for the LanguageTool API.",
+      "label": "Show Advanced Options in Form",
+      "description": "Display advanced option fields in the form. Values below are always used when filled, regardless of this setting.",
+      "type": "checkbox",
+      "required": false,
+      "default": false
+    },
+    {
+      "name": "motherTongue",
+      "title": "Mother Tongue",
+      "description": "Your native language code (e.g., pt-BR, es) for false friends detection.",
+      "type": "textfield",
+      "required": false,
+      "placeholder": "e.g., pt-BR"
+    },
+    {
+      "name": "preferredVariants",
+      "title": "Preferred Variants",
+      "description": "Comma-separated list of preferred language variants when using auto-detection (e.g., en-GB,de-AT).",
+      "type": "textfield",
+      "required": false,
+      "placeholder": "e.g., en-GB,de-AT"
+    },
+    {
+      "name": "level",
+      "title": "Check Level",
+      "description": "Verification level: empty (default API behavior), 'default' (force standard mode), or 'picky' (stricter checking with additional rules for formal text).",
+      "type": "dropdown",
+      "required": false,
+      "default": "",
+      "data": [
+        {
+          "title": "--",
+          "value": ""
+        },
+        {
+          "title": "Default",
+          "value": "default"
+        },
+        {
+          "title": "Picky (More Strict)",
+          "value": "picky"
+        }
+      ]
+    },
+    {
+      "name": "enabledRules",
+      "title": "Enabled Rules",
+      "description": "Comma-separated list of rule IDs to enable (e.g., RULE_ID_1,RULE_ID_2).",
+      "type": "textfield",
+      "required": false,
+      "placeholder": "e.g., COMMA_RULE,UPPERCASE_SENTENCE_START"
+    },
+    {
+      "name": "disabledRules",
+      "title": "Disabled Rules",
+      "description": "Comma-separated list of rule IDs to disable (e.g., WHITESPACE_RULE).",
+      "type": "textfield",
+      "required": false,
+      "placeholder": "e.g., WHITESPACE_RULE,PASSIVE_VOICE"
+    },
+    {
+      "name": "enabledCategories",
+      "title": "Enabled Categories",
+      "description": "Comma-separated list of category IDs to enable (e.g., GRAMMAR,TYPOS).",
+      "type": "textfield",
+      "required": false,
+      "placeholder": "e.g., GRAMMAR,TYPOS,PUNCTUATION"
+    },
+    {
+      "name": "disabledCategories",
+      "title": "Disabled Categories",
+      "description": "Comma-separated list of category IDs to disable (e.g., STYLE).",
+      "type": "textfield",
+      "required": false,
+      "placeholder": "e.g., STYLE,REDUNDANCY"
+    },
+    {
+      "name": "enabledOnly",
+      "label": "Enable Only Specified Rules",
+      "description": "If checked, only rules/categories specified in 'Enabled Rules' or 'Enabled Categories' will be active.",
       "type": "checkbox",
       "required": false,
       "default": false

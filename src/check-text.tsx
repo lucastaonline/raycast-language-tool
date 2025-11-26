@@ -7,15 +7,23 @@ import { checkTextWithAPI } from "./services/languagetool-api";
 
 interface Preferences {
   showAdvancedOptions?: boolean;
+  motherTongue?: string;
+  preferredVariants?: string;
+  level?: "" | "default" | "picky";
+  enabledRules?: string;
+  disabledRules?: string;
+  enabledCategories?: string;
+  disabledCategories?: string;
+  enabledOnly?: boolean;
 }
 
 interface FormValues {
   language: string;
   "text-to-check": string;
-  // Opções avançadas
+  // Opções avançadas (opcionais no form, mas vêm das preferências)
   motherTongue?: string;
   preferredVariants?: string;
-  level?: "default" | "picky";
+  level?: "" | "default" | "picky";
   enabledRules?: string;
   disabledRules?: string;
   enabledCategories?: string;
@@ -47,18 +55,19 @@ export default function Command() {
 
       try {
         // Usa serviço centralizado (inclui credenciais Premium automaticamente)
+        // Valores do form têm prioridade, mas fallback para preferências se não preenchido
         const result = await checkTextWithAPI({
           text: values["text-to-check"],
           language: values.language,
-          // Opções avançadas (se fornecidas)
-          motherTongue: values.motherTongue,
-          preferredVariants: values.preferredVariants,
-          level: values.level,
-          enabledRules: values.enabledRules,
-          disabledRules: values.disabledRules,
-          enabledCategories: values.enabledCategories,
-          disabledCategories: values.disabledCategories,
-          enabledOnly: values.enabledOnly,
+          // Opções avançadas: usa form se preenchido, senão usa preferências
+          motherTongue: values.motherTongue || preferences.motherTongue,
+          preferredVariants: values.preferredVariants || preferences.preferredVariants,
+          level: values.level || preferences.level,
+          enabledRules: values.enabledRules || preferences.enabledRules,
+          disabledRules: values.disabledRules || preferences.disabledRules,
+          enabledCategories: values.enabledCategories || preferences.enabledCategories,
+          disabledCategories: values.disabledCategories || preferences.disabledCategories,
+          enabledOnly: values.enabledOnly ?? preferences.enabledOnly,
         });
 
         // Navega para a tela de resultados
@@ -81,6 +90,15 @@ export default function Command() {
     initialValues: {
       language: selectedLanguage,
       "text-to-check": "",
+      // Valores iniciais vêm das preferências
+      motherTongue: preferences.motherTongue || "",
+      preferredVariants: preferences.preferredVariants || "",
+      level: preferences.level || "",
+      enabledRules: preferences.enabledRules || "",
+      disabledRules: preferences.disabledRules || "",
+      enabledCategories: preferences.enabledCategories || "",
+      disabledCategories: preferences.disabledCategories || "",
+      enabledOnly: preferences.enabledOnly || false,
     },
   });
 
@@ -126,11 +144,12 @@ export default function Command() {
           <Form.Dropdown
             id="level"
             title="Check Level"
-            info="Picky mode activates additional rules for formal text"
+            info="Verification level: empty (default API behavior), 'default' (force standard mode), or 'picky' (stricter checking with additional rules for formal text)."
             value={values.level}
-            onChange={(newValue) => itemProps.level.onChange?.(newValue as "default" | "picky" | undefined)}
+            onChange={(newValue) => itemProps.level.onChange?.(newValue as "" | "default" | "picky" | undefined)}
           >
-            <Form.Dropdown.Item value="" title="Default" />
+            <Form.Dropdown.Item value="" title="--" />
+            <Form.Dropdown.Item value="default" title="Default" />
             <Form.Dropdown.Item value="picky" title="Picky (More Strict)" />
           </Form.Dropdown>
 

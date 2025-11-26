@@ -6,6 +6,14 @@ interface Preferences {
   username?: string;
   apiKey?: string;
   showAdvancedOptions?: boolean;
+  motherTongue?: string;
+  preferredVariants?: string;
+  level?: "" | "default" | "picky";
+  enabledRules?: string;
+  disabledRules?: string;
+  enabledCategories?: string;
+  disabledCategories?: string;
+  enabledOnly?: boolean;
 }
 
 export interface CheckTextOptions {
@@ -31,8 +39,8 @@ export interface CheckTextOptions {
   disabledCategories?: string;
   /** Se true, apenas regras/categorias especificadas em enabledRules/enabledCategories são ativadas */
   enabledOnly?: boolean;
-  /** Nível de verificação: 'default' ou 'picky' (mais rigoroso) */
-  level?: "default" | "picky";
+  /** Nível de verificação: '' (padrão), 'default' ou 'picky' (mais rigoroso) */
+  level?: "" | "default" | "picky";
 }
 
 /**
