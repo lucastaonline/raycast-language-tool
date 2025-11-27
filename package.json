@@ -77,7 +77,7 @@
       "description": "Verification level: empty (default API behavior), 'default' (force standard mode), or 'picky' (stricter checking with additional rules for formal text).",
       "type": "dropdown",
       "required": false,
-      "default": "",
+      "default": "picky",
       "data": [
         {
           "title": "--",
@@ -132,6 +132,80 @@
       "type": "checkbox",
       "required": false,
       "default": false
+    },
+    {
+      "name": "enableHiddenRules",
+      "label": "Enable Hidden Rules",
+      "description": "If checked, enables hidden rules in the API.",
+      "type": "checkbox",
+      "required": false,
+      "default": true
+    },
+    {
+      "name": "noopLanguages",
+      "title": "Noop Languages",
+      "description": "Comma-separated list of language codes that should not be processed (e.g., pt,en).",
+      "type": "textfield",
+      "required": false,
+      "default": "",
+      "placeholder": "e.g., pt,en"
+    },
+    {
+      "name": "abtest",
+      "title": "A/B Test",
+      "description": "A/B test configuration string for experimental features. To get the best A/B test combination, use the official website https://languagetool.org/ and check the POST request to /check in devtools.",
+      "type": "textfield",
+      "required": false,
+      "default": "deggec,esggec,ptggec,qb,gc_1_aggressive,de_gc_1_aggressive,fr_gc_1_aggressive,pt_gc_1_aggressive,nl_gc_1_aggressive,es_gc_1_aggressive",
+      "placeholder": "e.g., deggec,esggec,ptggec"
+    },
+    {
+      "name": "mode",
+      "title": "Mode",
+      "description": "API mode: empty (default), 'allButTextLevelOnly', or 'textLevelOnly'.",
+      "type": "dropdown",
+      "required": false,
+      "default": "allButTextLevelOnly",
+      "data": [
+        {
+          "title": "--",
+          "value": ""
+        },
+        {
+          "title": "All But Text Level Only",
+          "value": "allButTextLevelOnly"
+        },
+        {
+          "title": "Text Level Only",
+          "value": "textLevelOnly"
+        }
+      ]
+    },
+    {
+      "name": "allowIncompleteResults",
+      "label": "Allow Incomplete Results",
+      "description": "If checked, allows the API to return incomplete results.",
+      "type": "checkbox",
+      "required": false,
+      "default": true
+    },
+    {
+      "name": "useragent",
+      "title": "User Agent",
+      "description": "User agent configuration for API requests.",
+      "type": "dropdown",
+      "required": false,
+      "default": "standalone",
+      "data": [
+        {
+          "title": "Standalone",
+          "value": "standalone"
+        },
+        {
+          "title": "",
+          "value": ""
+        }
+      ]
     }
   ],
   "dependencies": {

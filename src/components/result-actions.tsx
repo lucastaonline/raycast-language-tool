@@ -34,7 +34,10 @@ export function ResultActions({
             title="Apply All & Paste"
             icon={Icon.Wand}
             onAction={applyAllAndPaste}
-            shortcut={{ modifiers: ["cmd"], key: "return" }}
+            shortcut={{
+              Windows: { modifiers: ["ctrl"], key: "return" },
+              macOS: { modifiers: ["cmd"], key: "return" },
+            }}
           />
         </ActionPanel.Section>
       ) : (
@@ -43,7 +46,10 @@ export function ResultActions({
             title="Paste Text"
             icon={Icon.Text}
             onAction={pasteText}
-            shortcut={{ modifiers: ["cmd"], key: "return" }}
+            shortcut={{
+              Windows: { modifiers: ["ctrl"], key: "return" },
+              macOS: { modifiers: ["cmd"], key: "return" },
+            }}
           />
         </ActionPanel.Section>
       )}
@@ -61,14 +67,20 @@ export function ResultActions({
             title="Apply All Suggestions"
             icon={Icon.CheckCircle}
             onAction={applyAllSuggestions}
-            shortcut={{ modifiers: ["cmd", "shift"], key: "a" }}
+            shortcut={{
+              Windows: { modifiers: ["ctrl", "shift"], key: "a" },
+              macOS: { modifiers: ["cmd", "shift"], key: "a" },
+            }}
           />
           {appliedCount > 0 && (
             <Action
               title="Reset Corrections"
               icon={Icon.Undo}
               onAction={resetCorrections}
-              shortcut={{ modifiers: ["cmd"], key: "r" }}
+              shortcut={{
+                Windows: { modifiers: ["ctrl"], key: "r" },
+                macOS: { modifiers: ["cmd"], key: "r" },
+              }}
             />
           )}
         </ActionPanel.Section>

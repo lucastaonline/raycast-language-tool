@@ -1,6 +1,17 @@
-import { Clipboard, showToast, Toast, closeMainWindow } from "@raycast/api";
+import { Clipboard, showToast, Toast, closeMainWindow, getPreferenceValues } from "@raycast/api";
 import { applyAllCorrections } from "./utils/text-correction";
 import { checkTextWithAPI } from "./services/languagetool-api";
+
+interface Preferences {
+  level?: "" | "default" | "picky";
+  disabledRules?: string;
+  enableHiddenRules?: boolean;
+  noopLanguages?: string;
+  abtest?: string;
+  mode?: "" | "allButTextLevelOnly" | "textLevelOnly";
+  allowIncompleteResults?: boolean;
+  useragent?: "" | "standalone";
+}
 
 /**
  * Comando que lê texto do clipboard, verifica e cola o resultado corrigido
@@ -26,10 +37,21 @@ export default async function Command() {
       style: Toast.Style.Animated,
     });
 
+    // Pega preferências globais
+    const preferences = getPreferenceValues<Preferences>();
+
     // Usa serviço centralizado (inclui credenciais Premium automaticamente)
     const result = await checkTextWithAPI({
       text: text,
       language: "auto",
+      level: preferences.level,
+      disabledRules: preferences.disabledRules,
+      enableHiddenRules: preferences.enableHiddenRules,
+      noopLanguages: preferences.noopLanguages,
+      abtest: preferences.abtest,
+      mode: preferences.mode,
+      allowIncompleteResults: preferences.allowIncompleteResults,
+      useragent: preferences.useragent,
     });
 
     // Aplica todas as correções usando função utilitária pura

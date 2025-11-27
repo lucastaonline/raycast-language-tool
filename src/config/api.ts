@@ -2,7 +2,7 @@
  * Configurações da API LanguageTool
  */
 
-export const API_BASE_URL = "https://api.languagetoolplus.com/v2";
+export const API_BASE_URL = "https://api.languagetool.org/v2";
 
 export const API_ENDPOINTS = {
   LANGUAGES: `${API_BASE_URL}/languages`,

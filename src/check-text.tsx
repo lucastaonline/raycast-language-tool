@@ -15,11 +15,17 @@ interface Preferences {
   enabledCategories?: string;
   disabledCategories?: string;
   enabledOnly?: boolean;
+  enableHiddenRules?: boolean;
+  noopLanguages?: string;
+  abtest?: string;
+  mode?: "" | "allButTextLevelOnly" | "textLevelOnly";
+  allowIncompleteResults?: boolean;
+  useragent?: "" | "standalone";
 }
 
 interface FormValues {
   language: string;
-  "text-to-check": string;
+  text: string;
   // Opções avançadas (opcionais no form, mas vêm das preferências)
   motherTongue?: string;
   preferredVariants?: string;
@@ -29,6 +35,12 @@ interface FormValues {
   enabledCategories?: string;
   disabledCategories?: string;
   enabledOnly?: boolean;
+  enableHiddenRules?: boolean;
+  noopLanguages?: string;
+  abtest?: string;
+  mode?: "" | "allButTextLevelOnly" | "textLevelOnly";
+  allowIncompleteResults?: boolean;
+  useragent?: "" | "standalone";
 }
 
 export default function Command() {
@@ -56,8 +68,8 @@ export default function Command() {
       try {
         // Usa serviço centralizado (inclui credenciais Premium automaticamente)
         // Valores do form têm prioridade, mas fallback para preferências se não preenchido
-        const result = await checkTextWithAPI({
-          text: values["text-to-check"],
+        const request = {
+          data: JSON.stringify({ text: values.text }),
           language: values.language,
           // Opções avançadas: usa form se preenchido, senão usa preferências
           motherTongue: values.motherTongue || preferences.motherTongue,
@@ -68,10 +80,17 @@ export default function Command() {
           enabledCategories: values.enabledCategories || preferences.enabledCategories,
           disabledCategories: values.disabledCategories || preferences.disabledCategories,
           enabledOnly: values.enabledOnly ?? preferences.enabledOnly,
-        });
+          enableHiddenRules: values.enableHiddenRules ?? preferences.enableHiddenRules,
+          noopLanguages: values.noopLanguages || preferences.noopLanguages,
+          abtest: values.abtest || preferences.abtest,
+          mode: values.mode || preferences.mode,
+          allowIncompleteResults: values.allowIncompleteResults ?? preferences.allowIncompleteResults,
+          useragent: values.useragent || preferences.useragent,
+        };
 
-        // Navega para a tela de resultados
-        push(<CheckTextResult result={result} textChecked={values["text-to-check"]} />);
+        const result = await checkTextWithAPI(request);
+
+        push(<CheckTextResult result={result} textChecked={values.text} />);
       } catch (error) {
         console.error("Erro ao verificar texto:", error);
         throw error;
@@ -79,7 +98,7 @@ export default function Command() {
     },
     validation: {
       language: FormValidation.Required,
-      "text-to-check": (value) => {
+      text: (value) => {
         if (!value || value.trim().length === 0) {
           return "Text is required";
         } else if (value.trim().length < 3) {
@@ -89,7 +108,7 @@ export default function Command() {
     },
     initialValues: {
       language: selectedLanguage,
-      "text-to-check": "",
+      text: "",
       // Valores iniciais vêm das preferências
       motherTongue: preferences.motherTongue || "",
       preferredVariants: preferences.preferredVariants || "",
@@ -99,6 +118,12 @@ export default function Command() {
       enabledCategories: preferences.enabledCategories || "",
       disabledCategories: preferences.disabledCategories || "",
       enabledOnly: preferences.enabledOnly || false,
+      enableHiddenRules: preferences.enableHiddenRules ?? true,
+      noopLanguages: preferences.noopLanguages || "",
+      abtest: preferences.abtest || "",
+      mode: preferences.mode || "",
+      allowIncompleteResults: preferences.allowIncompleteResults ?? true,
+      useragent: preferences.useragent || "standalone",
     },
   });
 
@@ -123,6 +148,7 @@ export default function Command() {
         {...itemProps.language}
         onChange={handleLanguageChange}
       >
+        <Form.Dropdown.Item key="auto" value="auto" title="Auto" />
         {sortedLanguages.map((lang) => (
           <Form.Dropdown.Item key={lang.longCode} value={lang.longCode} title={lang.name} />
         ))}
@@ -132,10 +158,10 @@ export default function Command() {
         title="Text to check"
         placeholder="Type or paste your text here..."
         enableMarkdown={false}
-        {...itemProps["text-to-check"]}
+        {...itemProps.text}
       />
 
-      <Form.Description text={`${values["text-to-check"]?.length || 0} characters`} />
+      <Form.Description text={`${values.text?.length || 0} characters`} />
 
       {preferences.showAdvancedOptions && (
         <>
@@ -200,6 +226,55 @@ export default function Command() {
             info="If checked, only rules specified in 'Enabled Rules' will be active"
             {...itemProps.enabledOnly}
           />
+
+          <Form.Checkbox
+            label="Enable Hidden Rules"
+            info="If checked, enables hidden rules in the API"
+            {...itemProps.enableHiddenRules}
+          />
+
+          <Form.TextField
+            title="Noop Languages"
+            placeholder="e.g., pt,en"
+            info="Comma-separated list of language codes that should not be processed"
+            {...itemProps.noopLanguages}
+          />
+
+          <Form.TextField
+            title="A/B Test"
+            placeholder="e.g., deggec,esggec,ptggec"
+            info="A/B test configuration string for experimental features"
+            {...itemProps.abtest}
+          />
+
+          <Form.Dropdown
+            id="mode"
+            title="Mode"
+            info="API mode: empty (default), 'allButTextLevelOnly', or 'textLevelOnly'."
+            value={values.mode}
+            onChange={(newValue) => itemProps.mode.onChange?.(newValue as "" | "allButTextLevelOnly" | "textLevelOnly" | undefined)}
+          >
+            <Form.Dropdown.Item value="" title="--" />
+            <Form.Dropdown.Item value="allButTextLevelOnly" title="All But Text Level Only" />
+            <Form.Dropdown.Item value="textLevelOnly" title="Text Level Only" />
+          </Form.Dropdown>
+
+          <Form.Checkbox
+            label="Allow Incomplete Results"
+            info="If checked, allows the API to return incomplete results"
+            {...itemProps.allowIncompleteResults}
+          />
+
+          <Form.Dropdown
+            id="useragent"
+            title="User Agent"
+            info="User agent configuration for API requests"
+            value={values.useragent}
+            onChange={(newValue) => itemProps.useragent.onChange?.(newValue as "" | "standalone" | undefined)}
+          >
+            <Form.Dropdown.Item value="standalone" title="Standalone" />
+            <Form.Dropdown.Item value="" title="" />
+          </Form.Dropdown>
         </>
       )}
     </Form>
