@@ -14,12 +14,12 @@ interface Preferences {
 }
 
 /**
- * Comando que lê texto do clipboard, verifica e cola o resultado corrigido
- * Executa instantaneamente sem UI
+ * Command that reads text from clipboard, checks it, and pastes the corrected result
+ * Runs instantly without UI
  */
 export default async function Command() {
   try {
-    // Lê texto do clipboard
+    // Read text from clipboard
     const text = await Clipboard.readText();
 
     if (!text || text.trim().length === 0) {
@@ -31,16 +31,16 @@ export default async function Command() {
       return;
     }
 
-    // Mostra loading
+    // Show loading
     await showToast({
       title: "Checking text...",
       style: Toast.Style.Animated,
     });
 
-    // Pega preferências globais
+    // Get global preferences
     const preferences = getPreferenceValues<Preferences>();
 
-    // Usa serviço centralizado (inclui credenciais Premium automaticamente)
+    // Use centralized service (includes Premium credentials automatically)
     const result = await checkTextWithAPI({
       text: text,
       language: "auto",
@@ -54,10 +54,10 @@ export default async function Command() {
       useragent: preferences.useragent,
     });
 
-    // Aplica todas as correções usando função utilitária pura
+    // Apply all corrections using pure utility function
     const correctedText = applyAllCorrections(text, result);
 
-    // Cola o texto corrigido
+    // Paste the corrected text
     await Clipboard.paste(correctedText);
 
     // Feedback
@@ -68,7 +68,7 @@ export default async function Command() {
       style: Toast.Style.Success,
     });
 
-    // Fecha a janela do Raycast
+    // Close Raycast window
     await closeMainWindow();
   } catch (error) {
     await showToast({

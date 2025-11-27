@@ -1,12 +1,12 @@
-// Tipos para a API LanguageTool
-// Baseado no Swagger 2.0 oficial
+// Types for LanguageTool API
+// Based on official Swagger 2.0
 
 export interface Language {
-  /** Nome do idioma como 'French' ou 'English (Australia)' */
+  /** Language name like 'French' or 'English (Australia)' */
   name: string;
-  /** Código do idioma como 'en' */
+  /** Language code like 'en' */
   code: string;
-  /** Código completo do idioma como 'en-US' ou 'ca-ES-valencia' */
+  /** Complete language code like 'en-US' or 'ca-ES-valencia' */
   longCode: string;
 }
 
@@ -31,23 +31,23 @@ export interface CheckTextResponse {
 }
 
 export interface Match {
-  /** Mensagem sobre o erro exibida ao usuário */
+  /** Error message displayed to the user */
   message: string;
-  /** Versão mais curta opcional da mensagem */
+  /** Optional shorter version of the message */
   shortMessage?: string;
-  /** Offset baseado em 0 do erro no texto */
+  /** 0-based offset of the error in the text */
   offset: number;
-  /** Comprimento do erro em caracteres */
+  /** Length of the error in characters */
   length: number;
-  /** Substituições que podem corrigir o erro */
+  /** Replacements that can fix the error */
   replacements: Replacement[];
-  /** Contexto do erro */
+  /** Error context */
   context: {
     text: string;
     offset: number;
     length: number;
   };
-  /** A sentença onde o erro ocorreu */
+  /** The sentence where the error occurred */
   sentence: string;
   rule?: {
     id: string;

@@ -1,5 +1,5 @@
 /**
- * Configurações da API LanguageTool
+ * LanguageTool API configuration
  */
 
 export const API_BASE_URL = "https://api.languagetool.org/v2";
@@ -10,7 +10,7 @@ export const API_ENDPOINTS = {
 } as const;
 
 /**
- * Limites da API (Free vs Premium)
+ * API limits (Free vs Premium)
  */
 export const API_LIMITS = {
   FREE: {
@@ -26,6 +26,6 @@ export const API_LIMITS = {
 } as const;
 
 /**
- * Timeout padrão para requisições (em ms)
+ * Default timeout for requests (in ms)
  */
 export const API_TIMEOUT = 30_000;

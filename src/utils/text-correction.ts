@@ -1,14 +1,14 @@
 import type { CheckTextResponse } from "../types";
 
 /**
- * Calcula o texto corrigido aplicando as sugestões especificadas
+ * Calculates the corrected text by applying specified suggestions
  *
- * Função pura - pode ser usada em qualquer contexto (hooks, comandos async, etc)
+ * Pure function - can be used in any context (hooks, async commands, etc)
  *
- * @param textChecked - Texto original
- * @param result - Resposta da API com os matches
- * @param appliedIndexes - Set de índices das sugestões a aplicar
- * @returns Texto com correções aplicadas
+ * @param textChecked - Original text
+ * @param result - API response with matches
+ * @param appliedIndexes - Set of indexes of suggestions to apply
+ * @returns Text with corrections applied
  */
 export function calculateCorrectedText(
   textChecked: string,
@@ -22,7 +22,7 @@ export function calculateCorrectedText(
   let text = textChecked;
   let offset = 0;
 
-  // Aplica as correções em ordem
+  // Apply corrections in order
   const sortedMatches = result.matches
     .filter((_, index) => appliedIndexes.has(index))
     .sort((a, b) => a.offset - b.offset);
@@ -40,18 +40,18 @@ export function calculateCorrectedText(
 }
 
 /**
- * Aplica TODAS as correções de uma resposta da API
+ * Applies ALL corrections from an API response
  *
- * @param textChecked - Texto original
- * @param result - Resposta da API
- * @returns Texto completamente corrigido
+ * @param textChecked - Original text
+ * @param result - API response
+ * @returns Fully corrected text
  */
 export function applyAllCorrections(textChecked: string, result: CheckTextResponse): string {
   if (!result.matches || result.matches.length === 0) {
     return textChecked;
   }
 
-  // Cria set com todos os índices
+  // Create set with all indexes
   const allIndexes = new Set(result.matches.map((_, index) => index));
 
   return calculateCorrectedText(textChecked, result, allIndexes);

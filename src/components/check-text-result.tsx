@@ -10,7 +10,7 @@ interface CheckTextResultProps {
 }
 
 export function CheckTextResult({ result, textChecked }: CheckTextResultProps) {
-  // Hook gerencia toda a lógica de correções
+  // Hook manages all correction logic
   const {
     correctedText,
     appliedSuggestions,

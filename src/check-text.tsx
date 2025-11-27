@@ -26,7 +26,7 @@ interface Preferences {
 interface FormValues {
   language: string;
   text: string;
-  // Opções avançadas (opcionais no form, mas vêm das preferências)
+  // Advanced options (optional in form, but come from preferences)
   motherTongue?: string;
   preferredVariants?: string;
   level?: "" | "default" | "picky";
@@ -47,31 +47,31 @@ export default function Command() {
   const { push } = useNavigation();
   const preferences = getPreferenceValues<Preferences>();
 
-  // Persistir idioma selecionado entre execuções
+  // Persist selected language between executions
   const [selectedLanguage, setSelectedLanguage] = useCachedState<string>("selected-language", "en-US");
 
-  // Buscar idiomas com cache automático
+  // Fetch languages with automatic cache
   const { data: languages, isLoading: loadingLanguages } = useFetch<Language[]>(API_ENDPOINTS.LANGUAGES);
 
-  // Ordenar idiomas por frequência de uso (mais usados aparecem primeiro!)
+  // Sort languages by frequency of use (most used appear first!)
   const { data: sortedLanguages, visitItem } = useFrecencySorting(languages || [], {
     key: (lang) => lang.longCode,
   });
 
-  // Form com validação
+  // Form with validation
   const { handleSubmit, itemProps, values } = useForm<FormValues>({
     async onSubmit(values) {
-      // Registra o uso do idioma para sorting
+      // Register language usage for sorting
       const lang = languages?.find((l) => l.longCode === values.language);
       if (lang) visitItem(lang);
 
       try {
-        // Usa serviço centralizado (inclui credenciais Premium automaticamente)
-        // Valores do form têm prioridade, mas fallback para preferências se não preenchido
+        // Use centralized service (includes Premium credentials automatically)
+        // Form values take priority, but fallback to preferences if not filled
         const request = {
           data: JSON.stringify({ text: values.text }),
           language: values.language,
-          // Opções avançadas: usa form se preenchido, senão usa preferências
+          // Advanced options: use form if filled, otherwise use preferences
           motherTongue: values.motherTongue || preferences.motherTongue,
           preferredVariants: values.preferredVariants || preferences.preferredVariants,
           level: values.level || preferences.level,
@@ -92,7 +92,7 @@ export default function Command() {
 
         push(<CheckTextResult result={result} textChecked={values.text} />);
       } catch (error) {
-        console.error("Erro ao verificar texto:", error);
+        console.error("Error checking text:", error);
         throw error;
       }
     },
@@ -109,7 +109,7 @@ export default function Command() {
     initialValues: {
       language: selectedLanguage,
       text: "",
-      // Valores iniciais vêm das preferências
+      // Initial values come from preferences
       motherTongue: preferences.motherTongue || "",
       preferredVariants: preferences.preferredVariants || "",
       level: preferences.level || "",
@@ -127,7 +127,7 @@ export default function Command() {
     },
   });
 
-  // Atualiza idioma persistido quando mudar
+  // Update persisted language when changed
   const handleLanguageChange = (newLanguage: string) => {
     setSelectedLanguage(newLanguage);
     itemProps.language.onChange?.(newLanguage);

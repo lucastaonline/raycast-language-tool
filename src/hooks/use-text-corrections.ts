@@ -4,17 +4,17 @@ import type { CheckTextResponse } from "../types";
 import { calculateCorrectedText } from "../utils/text-correction";
 
 /**
- * Hook para gerenciar correções de texto
+ * Hook to manage text corrections
  */
 export function useTextCorrections(textChecked: string, result: CheckTextResponse) {
   const [appliedSuggestions, setAppliedSuggestions] = useState<Set<number>>(new Set());
 
-  // Texto corrigido atual
+  // Current corrected text
   const correctedText = useMemo(() => {
     return calculateCorrectedText(textChecked, result, appliedSuggestions);
   }, [textChecked, result, appliedSuggestions]);
 
-  // Aplica uma sugestão individual
+  // Apply an individual suggestion
   const applySuggestion = useCallback(
     async (index: number) => {
       const newApplied = new Set(appliedSuggestions);
@@ -29,7 +29,7 @@ export function useTextCorrections(textChecked: string, result: CheckTextRespons
     [appliedSuggestions],
   );
 
-  // Aplica todas as sugestões
+  // Apply all suggestions
   const applyAllSuggestions = useCallback(async () => {
     if (!result.matches) return;
 
@@ -42,7 +42,7 @@ export function useTextCorrections(textChecked: string, result: CheckTextRespons
     });
   }, [result.matches]);
 
-  // Aplica todas e cola
+  // Apply all and paste
   const applyAllAndPaste = useCallback(async () => {
     const allIndexes = new Set(result.matches?.map((_, index) => index) || []);
     const fullyCorrectedText = calculateCorrectedText(textChecked, result, allIndexes);
@@ -56,7 +56,7 @@ export function useTextCorrections(textChecked: string, result: CheckTextRespons
     });
   }, [textChecked, result]);
 
-  // Copia texto corrigido
+  // Copy corrected text
   const copyToClipboard = useCallback(async () => {
     await Clipboard.copy(correctedText);
     await showToast({
@@ -65,7 +65,7 @@ export function useTextCorrections(textChecked: string, result: CheckTextRespons
     });
   }, [correctedText]);
 
-  // Cola texto corrigido
+  // Paste corrected text
   const pasteText = useCallback(async () => {
     await Clipboard.paste(correctedText);
     await showToast({
@@ -74,7 +74,7 @@ export function useTextCorrections(textChecked: string, result: CheckTextRespons
     });
   }, [correctedText]);
 
-  // Reseta correções
+  // Reset corrections
   const resetCorrections = useCallback(() => {
     setAppliedSuggestions(new Set());
     showToast({

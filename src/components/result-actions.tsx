@@ -27,7 +27,7 @@ export function ResultActions({
 
   return (
     <ActionPanel>
-      {/* Ação Principal */}
+      {/* Primary Action */}
       {matchesCount > 0 ? (
         <ActionPanel.Section title="Quick Actions">
           <Action
@@ -54,13 +54,13 @@ export function ResultActions({
         </ActionPanel.Section>
       )}
 
-      {/* Ações de Texto */}
+      {/* Text Actions */}
       <ActionPanel.Section title="Text Actions">
         <Action title="Copy Corrected Text" icon={Icon.Clipboard} onAction={copyToClipboard} />
         {matchesCount > 0 && <Action title="Paste Corrected Text" icon={Icon.Text} onAction={pasteText} />}
       </ActionPanel.Section>
 
-      {/* Ações de Correção */}
+      {/* Correction Actions */}
       {matchesCount > 0 && (
         <ActionPanel.Section title="Corrections">
           <Action
@@ -86,7 +86,7 @@ export function ResultActions({
         </ActionPanel.Section>
       )}
 
-      {/* Correções Individuais */}
+      {/* Individual Corrections */}
       {result.matches &&
         result.matches.map((match, index) => {
           if (appliedSuggestions.has(index)) return null;
